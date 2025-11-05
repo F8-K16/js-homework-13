@@ -8,11 +8,6 @@ const oldPostBtn = document.querySelector("#old-btn");
 const tabButtons = document.querySelectorAll(".tab-btn");
 const loadingEl = document.querySelector("#loading");
 
-const createModal = document.querySelector("#create-modal");
-const createForm = document.querySelector("#create-post-form");
-const closeCreateModalBtn = document.querySelector("#close-create-modal");
-const addNewBtn = document.querySelector(".create-post-btn");
-
 oldPostBtn.classList.add("active");
 
 const fetchJSON = async (url) => {
@@ -54,12 +49,57 @@ const renderPosts = (posts) => {
 
 const renderModal = (post) => {
   modalEl.innerHTML = `
-    <div class="modal-box relative bg-white p-6 rounded-xl shadow-lg max-w-lg mx-auto">
-      <button class="modal-close absolute top-2 right-3 text-2xl font-bold text-gray-600 hover:text-gray-900">
+    <div class="modal-box relative bg-white p-8 pt-12 rounded-2xl max-w-2xl mx-auto animate-fadeIn">
+      <button
+        class="modal-close absolute top-3 right-4 text-3xl font-bold text-gray-400 hover:text-gray-700 transition"
+      >
         &times;
       </button>
-      <h2 class="text-2xl font-semibold mb-3">${post.title}</h2>
-      <p class="text-gray-700 leading-relaxed">${post.body}</p>
+
+      <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b pb-2">${
+        post.title
+      }</h2>
+
+      <p class="text-gray-700 leading-relaxed mb-10">${post.body}</p>
+
+      <div class="grid grid-cols-4 gap-4 border-b pb-4 text-sm text-gray-600">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-gray-700"><i class="fa-solid fa-user" style="color: #000000;"></i> User ID:</span> ${
+            post.userId
+          }
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-gray-700"><i class="fa-regular fa-eye" style="color: #B197FC;"></i> Views:</span> ${
+            post.views
+          }
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-gray-700"><i class="fa-regular fa-thumbs-up" style="color: #20d9cd;"></i> Likes:</span> ${
+            post.reactions?.likes ?? 0
+          }
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-gray-700"><i class="fa-regular fa-thumbs-down" style="color: #f01919;"></i> Dislikes:</span> ${
+            post.reactions?.dislikes ?? 0
+          }
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Tags</h3>
+        <div class="flex flex-wrap gap-2">
+          ${post.tags
+            .map(
+              (tag) => `
+            <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
+              #${tag}
+            </span>`
+            )
+            .join("")}
+        </div>
+      </div>
+
+      
     </div>
   `;
   modalEl.style.display = "flex";
