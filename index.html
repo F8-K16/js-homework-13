@@ -29,19 +29,20 @@
         class="tabs flex overflow-hidden border border-[#ccc] bg-[#f1f1f1] my-14 justify-start"
       >
         <button
-          id="old-btn"
-          class="tab-btn py-2 px-6 font-medium transition-colors duration-200"
-        >
-          Cũ nhất
-        </button>
-        <button
           id="new-btn"
           class="tab-btn py-2 px-6 font-medium transition-colors duration-200"
         >
           Mới nhất
         </button>
+        <button
+          id="old-btn"
+          class="tab-btn py-2 px-6 font-medium transition-colors duration-200"
+        >
+          Cũ nhất
+        </button>
       </div>
       <button
+        id="open-create-modal"
         class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
       >
         Thêm mới
@@ -51,7 +52,10 @@
     <div id="root" class="space-y-4"></div>
 
     <!-- Modal details -->
-    <div id="modal"></div>
+    <div
+      id="modal"
+      class="hidden fixed inset-0 bg-gray-500/50 items-center justify-center z-50 animate-fadeIn"
+    ></div>
 
     <div
       id="loading"
