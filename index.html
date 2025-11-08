@@ -14,7 +14,9 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <body class="gb-gray-100 font-sans flex flex-col items-center py-20 px-60">
+
+  <body class="gb-gray-100 font-sans flex flex-col items-center py-20 px-80">
+    <h1 class="text-3xl font-bold mb-6">Blogs</h1>
     <div class="w-full max-w-3xl">
       <input
         type="text"
@@ -51,11 +53,22 @@
 
     <div id="root" class="space-y-4"></div>
 
-    <!-- Modal details -->
     <div
       id="modal"
       class="hidden fixed inset-0 bg-gray-500/50 items-center justify-center z-50 animate-fadeIn"
-    ></div>
+    >
+      <div
+        id="modal-box"
+        class="bg-white p-8 rounded-xl shadow-xl max-w-4xl w-full relative"
+      >
+        <button
+          class="modal-close absolute top-2 right-4 text-2xl font-bold text-gray-600 hover:text-gray-900"
+        >
+          &times;
+        </button>
+        <div id="modal-content"></div>
+      </div>
+    </div>
 
     <div
       id="loading"
