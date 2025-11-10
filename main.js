@@ -13,6 +13,8 @@ const openCreateModal = document.querySelector("#open-create-modal");
 let currentModalType = null;
 const LIMIT_POSTS_SIZE = 10;
 const PAGINATION_GROUP = 10;
+// Fake action CUD by new Array
+let localPosts = [];
 
 // Fetch API
 const fetchJSON = async (url) => {
@@ -64,7 +66,8 @@ const getPaginatedPosts = async (page = 1, order = "desc") => {
   const data = await fetchJSON(
     `${dummyURL}?limit=${LIMIT_POSTS_SIZE}&skip=${skip}&sortBy=id&order=${order}`
   );
-  renderPosts(data.posts);
+  localPosts = data.posts;
+  renderPosts(localPosts);
   renderPagination(order, data.total, page);
 };
 
@@ -237,10 +240,8 @@ const handleCreate = async (e) => {
     });
 
     const newPost = await res.json();
-    const data = await fetchJSON(`${dummyURL}?sortBy=id&order=desc`);
-    const updatedPosts = [newPost, ...data.posts];
-
-    renderPosts(updatedPosts);
+    localPosts.unshift(newPost);
+    renderPosts(localPosts);
     if (oldPostBtn.classList.contains("active")) {
       oldPostBtn.classList.remove("active");
       newPostBtn.classList.add("active");
@@ -269,11 +270,10 @@ const handleEdit = async (e, postId) => {
     });
 
     const updatedPost = await res.json();
-    const data = await fetchJSON(`${dummyURL}?sortBy=id&order=desc`);
-    const updatedPosts = data.posts.map((p) =>
-      p.id === postId ? updatedPost : p
+    localPosts = localPosts.map((post) =>
+      post.id === Number(postId) ? updatedPost : post
     );
-    renderPosts(updatedPosts);
+    renderPosts(localPosts);
   } catch (error) {
     console.error("Cập nhật thất bại:", error);
   } finally {
@@ -287,11 +287,12 @@ const handleDelete = async (postId) => {
 
   try {
     showLoading();
-    const res = await fetch(`${dummyURL}/${postId}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Không thể xóa bài viết.");
-    const data = await fetchJSON(`${dummyURL}?sortBy=id&order=desc`);
-    const updatePosts = data.posts.filter((p) => p.id !== Number(postId));
-    renderPosts(updatePosts);
+    await fetch(`${dummyURL}/${postId}`, { method: "DELETE" });
+
+    localPosts = localPosts.filter((post) => post.id !== Number(postId));
+    console.log(localPosts);
+
+    renderPosts(localPosts);
   } catch (error) {
     console.error("Xóa thất bại:", error);
   } finally {
